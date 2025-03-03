@@ -6,7 +6,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-@FeignClient(name = "catalogo-service", url = "http://localhost:8082")
+import co.analisys.biblioteca.bean.FeignRequestConfig;
+
+@FeignClient(name = "catalogo-service", url = "http://localhost:8082",configuration = FeignRequestConfig.class)
 public interface CatalogoClient {
 
     @GetMapping("/libros/{libroId}/disponible")
