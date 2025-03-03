@@ -6,7 +6,7 @@ import co.analisys.biblioteca.model.PrestamoId;
 import co.analisys.biblioteca.model.UsuarioId;
 import co.analisys.biblioteca.service.CirculacionService;
 import io.swagger.v3.oas.annotations.Operation;
-
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,6 +25,7 @@ public class CirculacionController {
         "En caso contrario, se lanza una excepción indicando que el libro no está disponible."
     )
     @PostMapping("/prestar")
+    @PreAuthorize("hasRole('ROLE_EDITAR')")
     public void prestarLibro(@RequestParam String usuarioId, @RequestParam String libroId) {
         circulacionService.prestarLibro(new UsuarioId(usuarioId), new LibroId(libroId));
     }
@@ -35,6 +36,7 @@ public class CirculacionController {
         "Se actualiza el estado del préstamo y se notifica al usuario que el libro ha sido devuelto."
     )
     @PostMapping("/devolver")
+    @PreAuthorize("hasRole('ROLE_EDITAR')")
     public void devolverLibro(@RequestParam String prestamoId) {
         circulacionService.devolverLibro(new PrestamoId(prestamoId));
     }
@@ -46,6 +48,7 @@ public class CirculacionController {
         "de lo contrario no podrá acceder a esta información."
     )
     @GetMapping("/prestamos")
+    @PreAuthorize("hasRole('ROLE_CONSULTAR')")
     public List<Prestamo> obtenerTodosPrestamos() {
         return circulacionService.obtenerTodosPrestamos();
     }
